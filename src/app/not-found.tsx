@@ -16,12 +16,12 @@ export default function NotFoundPage() {
 
       {/* Heading */}
       <h1 className="text-3xl md:text-6xl font-bold text-[#2d386a] mb-3">
-        Oops! You're a little lost.
+        Oops! You&apos;re a little lost.
       </h1>
 
       {/* Description */}
       <p className="text-gray-600 max-w-md mb-6 text-sm md:text-base">
-        The page you’re trying to access doesn’t exist. It might have been removed,
+        The page you&apos;re trying to access doesn&apos;t exist. It might have been removed,
         renamed, or never existed in the first place.
       </p>
 

@@ -1,14 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import {
-    FaTwitter,
-    FaFacebookF,
-    FaLinkedinIn,
-    FaYoutube,
-    FaHome
+  FaTwitter,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaYoutube,
 } from "react-icons/fa";
-
 export default function Footer() {
     return (
         <footer className="bg-gray-50 text-black pt-14 pb-10">

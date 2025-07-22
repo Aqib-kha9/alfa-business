@@ -1,4 +1,6 @@
+// src/app/components/reusable/PlanPricing.tsx
 import { CheckCircle } from 'lucide-react';
+import { Plan } from '@/app/types/plan';
 
 function formatINR(value: number) {
   return new Intl.NumberFormat('en-IN', {
@@ -8,7 +10,7 @@ function formatINR(value: number) {
   }).format(value);
 }
 
-export default function PlanPricing({ plan }: { plan: any }) {
+export default function PlanPricing({ plan }: { plan: Plan }) {
   return (
     <div className="grid md:grid-cols-2 gap-8 mt-10">
       {/* Monthly Plan */}
@@ -20,7 +22,7 @@ export default function PlanPricing({ plan }: { plan: any }) {
         <p className="text-sm text-gray-500 mb-4">Billed per Month</p>
 
         <ul className="space-y-2 text-sm text-gray-700">
-          {plan.features?.map((feature: string, i: number) => (
+          {plan.features?.map((feature, i) => (
             <li key={i} className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
               {feature}

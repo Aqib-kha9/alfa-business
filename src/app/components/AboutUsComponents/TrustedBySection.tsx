@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const trustedLogos = [
   "clogo1.jpg", "clogo2.png", "clogo3.webp",
   "clogo1.jpg", "clogo2.png", "clogo3.webp",
@@ -26,9 +28,11 @@ export default function TrustedBySection() {
             <div className="flex w-max gap-10 animate-marquee">
               {repeated.map((logo, index) => (
                 <div key={`row1-${index}`} className="w-28 md:w-32 lg:w-36 shrink-0">
-                  <img
+                  <Image
                     src={`/${logo}`}
                     alt={`Logo ${index + 1}`}
+                    width={150}
+                    height={60}
                     className="w-full h-auto object-contain grayscale hover:grayscale-0 transition duration-300"
                   />
                 </div>
@@ -41,9 +45,11 @@ export default function TrustedBySection() {
             <div className="flex flex-nowrap justify-center gap-10 sm:justify-center sm:overflow-hidden min-w-full">
               {trustedLogos.map((logo, index) => (
                 <div key={`row2-${index}`} className="w-28 md:w-32 lg:w-36 shrink-0">
-                  <img
+                  <Image
                     src={`/${logo}`}
                     alt={`Static Logo ${index + 1}`}
+                    width={150}
+                    height={60}
                     className="w-full h-auto object-contain"
                   />
                 </div>
