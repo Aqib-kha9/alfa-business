@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { CiCirclePlus } from "react-icons/ci";
 import Image from 'next/image';
 import clsx from 'clsx';
+import ActionMenu from '../components/ActionMenu';
+import { useRouter } from 'next/navigation';
 
 type Product = {
   id: string;
@@ -49,61 +52,124 @@ export default function ProductPage() {
     }
   };
 
+  const plans = [
+    {
+      image: '/images/flexi.jpg',
+      title: 'Flexi Desk',
+      price: '$199/month',
+      features: 'Hot Desk Access, High-speed Wi-Fi...',
+      popular: false,
+      available: true,
+    },
+    {
+      image: '/images/dedicated.jpg',
+      title: 'Dedicated Desk',
+      price: '$399/month',
+      features: 'Dedicated Desk, Locker Storage...',
+      popular: true,
+      available: true,
+    },
+    {
+      image: '/images/office.jpg',
+      title: 'Private Office',
+      price: '$999/month',
+      features: 'Private Lockable Office, Premium Furniture...',
+      popular: true,
+      available: true,
+    },
+    {
+      image: '/images/office.jpg',
+      title: 'Virtual Office',
+      price: '$299/month',
+      features: 'Business Address, Mail Forwarding...',
+      popular: false,
+      available: true,
+    },
+    {
+      image: '/images/office.jpg',
+      title: 'Meeting Room Pass',
+      price: '$50/day',
+      features: 'Access to Meeting Room, High-speed Wi-Fi...',
+      popular: false,
+      available: true,
+    },
+    {
+      image: '/images/office.jpg',
+      title: 'Event Space',
+      price: '$1000/event',
+      features: 'Exclusive Event Access, Catering Options...',
+      popular: false,
+      available: false,
+    },
+  ];
+  const router = useRouter();
+  const handleNewPlan = () => {
+    router.push("/admin/plans/add")
+  }
   return (
-    <div className="p-4 md:p-6">
-      <div className="mb-4 border-b flex gap-4">
-        <button
-          onClick={() => setActiveTab('list')}
-          className={clsx('pb-2', activeTab === 'list' && 'border-b-2 border-blue-600 font-semibold')}
-        >
-          Product List
-        </button>
-        <button
-          onClick={() => setActiveTab('create')}
-          className={clsx('pb-2', activeTab === 'create' && 'border-b-2 border-blue-600 font-semibold')}
-        >
-          Create Product
-        </button>
-      </div>
+    <>
+      <div className="p-4 md:p-6">
+        {/* Page Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Pricing Plans Overview</h1>
+          <p className="mt-1 text-gray-600 text-sm">
+            Manage your coworking space&apos;s pricing strategies. Here you can add new <br /> plans, update existing ones,
+            and control their visibility and popularity.
+          </p>
+        </div>
 
-      {activeTab === 'list' && (
-        <div className="overflow-x-auto border rounded-lg">
-          <table className="min-w-[1000px] w-full text-sm">
-            <thead className="bg-gray-100 text-left">
+        {/* Subheading and Add Button */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">All Pricing Plans</h2>
+          <button onClick={handleNewPlan} className="flex items-center bg-blue-950 text-white  text-sm px-4 py-2 rounded hover:bg-black">
+            <CiCirclePlus className='mx-2' />  Add New Plan
+          </button>
+        </div>
+
+        {/* Table */}
+        <div className="w-full overflow-x-auto rounded-lg bg-white border">
+          <table className="min-w-auto w-full text-sm text-left whitespace-nowrap">
+            <thead className="bg-gray-100 text-gray-600 uppercase">
               <tr>
-                <th className="p-2">#</th>
-                <th className="p-2">Branch</th>
-                <th className="p-2">Name</th>
-                <th className="p-2">Code</th>
-                <th className="p-2">Category</th>
-                <th className="p-2">Purchase Unit</th>
-                <th className="p-2">Sale Unit</th>
-                <th className="p-2">Unit Ratio</th>
-                <th className="p-2">Purchase Price</th>
-                <th className="p-2">Sales Price</th>
-                <th className="p-2">Remarks</th>
+                <th className="p-3">Image</th>
+                <th className="p-3">Title</th>
+                <th className="p-3">Price</th>
+                <th className="p-3">Features</th>
+                <th className="p-3 text-center">Popular</th>
+                <th className="p-3 text-center">Available</th>
+                <th className="p-3 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((p, idx) => (
-                <tr key={p.id} className="border-t">
-                  <td className="p-2">{idx + 1}</td>
-                  <td className="p-2">{p.branch}</td>
-                  <td className="p-2">{p.name}</td>
-                  <td className="p-2">{p.code}</td>
-                  <td className="p-2">{p.category}</td>
-                  <td className="p-2">{p.purchaseUnit}</td>
-                  <td className="p-2">{p.saleUnit}</td>
-                  <td className="p-2">{p.unitRatio}</td>
-                  <td className="p-2">₹{p.purchasePrice}</td>
-                  <td className="p-2">₹{p.salesPrice}</td>
-                  <td className="p-2">{p.remarks}</td>
+              {plans.map((plan, idx) => (
+                <tr key={idx} className="border-t hover:bg-gray-50">
+                  <td className="p-3">
+                    <Image
+                      src={plan.image}
+                      alt={plan.title}
+                      width={50}
+                      height={50}
+                      className="rounded-md object-cover"
+                    />
+                  </td>
+                  <td className="p-3">{plan.title}</td>
+                  <td className="p-3 text-blue-600 font-medium">{plan.price}</td>
+                  <td className="p-3 text-gray-700">{plan.features}</td>
+                  <td className="p-3 text-center">{plan.popular ? 'Yes' : 'No'}</td>
+                  <td className="p-3 text-center text-green-600 font-semibold">{plan.available ? 'Yes' : 'No'}</td>
+                  <td className="px-4 py-2 text-center">
+                    <ActionMenu
+                      onEdit={() => router.push('/admin/plans/edit')}
+                      onDelete={() => alert(`Delete ${plan.title}`)}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      )}
+
+      </div>
 
       {activeTab === 'create' && (
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -120,6 +186,6 @@ export default function ProductPage() {
           <button type="submit" className="btn bg-blue-600 text-white hover:bg-blue-700">Save Product</button>
         </form>
       )}
-    </div>
+    </>
   );
 }
