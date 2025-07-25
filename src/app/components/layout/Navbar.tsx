@@ -12,6 +12,7 @@ const navItems = [
   { label: "Amenities", href: "/amenities" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
+  
 ];
 
 const Navbar = () => {

@@ -10,7 +10,7 @@ interface PlanCardProps {
   title: string;
   price: string;
   duration: string;
-  features: string[];
+  features?: string[]; // Make features optional
   highlight?: string;
 }
 
@@ -20,7 +20,7 @@ export default function PlanCard({
   title,
   price,
   duration,
-  features,
+  features = [], // Default to empty array to avoid slice error
 }: PlanCardProps) {
   const router = useRouter();
   const [showAll, setShowAll] = useState(false);
@@ -29,13 +29,17 @@ export default function PlanCard({
   const hasMore = features.length > 3;
 
   return (
-    <div className="w-[400px] max-w-full cursor-pointer transition duration-300 border hover:shadow-lg border-gray-200 rounded-xl overflow-hidden bg-white flex flex-col">
-      {image && (
+    <div className="w-[400px] max-w-full transition duration-300 border hover:shadow-lg border-gray-200 rounded-xl overflow-hidden bg-white flex flex-col">
+      {image ? (
         <img
           src={image}
           alt={title}
           className="w-full h-40 object-cover rounded-t-xl"
         />
+      ) : (
+        <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+          No Image Available
+        </div>
       )}
 
       <div className="p-5 flex flex-col gap-y-4 flex-1">
@@ -82,7 +86,7 @@ export default function PlanCard({
             e.stopPropagation();
             router.push(`/plans/${slug}`);
           }}
-          className="mt-auto border border-[#1e2952] text-[#1e2952] font-medium py-2 rounded-md hover:bg-[#1e2952] hover:text-white transition"
+          className="mt-auto border cursor-pointer border-[#1e2952] text-[#1e2952] font-medium py-2 rounded-md hover:bg-[#1e2952] hover:text-white transition"
         >
           View Details
         </button>

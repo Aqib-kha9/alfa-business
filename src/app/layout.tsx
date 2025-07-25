@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import Navbar from '@/app/components/layout/Navbar'
-import Footer from '@/app/components/layout/Footer'
+import { Toaster } from 'sonner'
+import LayoutWrapper from '@/app/components/layout/LayoutWrapper'
 
 export const metadata: Metadata = {
   title: {
@@ -44,17 +44,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <Navbar />
-        <main className="min-h-screen pt-14">{children}</main>
-        <Footer />
+      <body suppressHydrationWarning={true}>
+        <Toaster />
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   )
