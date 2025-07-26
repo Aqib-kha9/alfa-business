@@ -1,16 +1,18 @@
 'use client';
 
-import { Home, Settings, PlusCircle, LogOut } from 'lucide-react';
+import { Home, PlusCircle, LogOut, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import { LuWallet } from "react-icons/lu";
+import { TiMessage } from "react-icons/ti";
 
 const menu = [
-  { icon: <Home size={20} />, label: 'Dashboard', href: '/admin/dashboard' },
+  { icon: <LayoutDashboard size={20} />, label: 'Dashboard', href: '/admin/dashboard' },
   { icon: <LuWallet size={20} />, label: 'Pricing Plans', href: '/admin/plans' },
   { icon: <PlusCircle size={20} />, label: 'Tour Requests', href: '/admin/tour' },
-  { icon: <Settings size={20} />, label: 'Amenities', href: '/admin/amenities' },
+  { icon: <Home size={20} />, label: 'Amenities', href: '/admin/amenities' },
+  { icon: <TiMessage  size={20} />, label: 'Testimonials', href: '/admin/testimonials' },
 ];
 
 export default function AdminSidebar({

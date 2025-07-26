@@ -108,7 +108,7 @@ export default function ProductPage() {
   }
   return (
     <>
-      <div className="p-4 md:p-6">
+      <div className="p-6 md:p-6">
         {/* Page Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Pricing Plans Overview</h1>
@@ -121,7 +121,7 @@ export default function ProductPage() {
         {/* Subheading and Add Button */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">All Pricing Plans</h2>
-          <button onClick={handleNewPlan} className="flex items-center bg-blue-950 text-white  text-sm px-4 py-2 rounded hover:bg-black">
+          <button onClick={handleNewPlan} className="bg-[#2d386a] text-white px-2 py-2 rounded-md flex items-center gap-2">
             <CiCirclePlus className='mx-2' />  Add New Plan
           </button>
         </div>

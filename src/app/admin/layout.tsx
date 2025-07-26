@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AdminSidebar from './components/Sidebar';
 import AdminNavbar from './components/Topbar';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -18,7 +19,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Close sidebar on mobile after clicking a link
+  // Detect outside click for mobile sidebar
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        isMobile &&
+        collapsed &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(e.target as Node)
+      ) {
+        setCollapsed(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [collapsed, isMobile]);
+
   const handleCloseSidebar = () => {
     if (isMobile) setCollapsed(false);
   };
@@ -40,17 +57,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         )}
 
-        {/* Mobile Sidebar - overlays when collapsed = true */}
+        {/* Mobile Sidebar */}
         {isMobile && collapsed && (
-          <div className="fixed top-0 left-0 z-50 w-64 h-full bg-white shadow-lg">
+          <div
+            ref={sidebarRef}
+            className="fixed top-0 left-0 z-50 w-64 h-full bg-white shadow-lg"
+          >
             <AdminSidebar collapsed={false} onLinkClick={handleCloseSidebar} />
           </div>
         )}
 
         {/* Main content */}
-        <main className="flex-1 overflow-auto p-4 sm:p-6">
-          {children}
-        </main>
+        <main className="flex-1 overflow-auto p-4 sm:p-6">{children}</main>
       </div>
     </div>
   );

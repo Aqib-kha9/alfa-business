@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import clsx from 'clsx';
 import ActionMenu from '../components/ActionMenu'; // ✅ Make sure this path is correct
+import { useRouter } from 'next/navigation';
 
 const tabs = ['All Requests', 'Pending', 'Approved'];
 
@@ -30,14 +31,14 @@ const mockData = [
 
 export default function TourRequestsPage() {
   const [selectedTab, setSelectedTab] = useState('All Requests');
-
+  const router = useRouter();
   const filteredData =
     selectedTab === 'All Requests'
       ? mockData
       : mockData.filter((d) => d.status === selectedTab);
 
   return (
-    <div className=" w-full">
+    <div className=" p-6 mx-auto">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -46,9 +47,7 @@ export default function TourRequestsPage() {
             Efficiently manage and track all incoming tour inquiries.
           </p>
         </div>
-        <button className="bg-[#2d386a] text-white px-2 py-2 rounded-md flex items-center gap-2">
-          <FaPlus size={14} /> Add New Request
-        </button>
+        
       </div>
 
       {/* Tabs */}
@@ -70,7 +69,7 @@ export default function TourRequestsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white shadow-sm rounded-lg overflow-x-auto">
+      <div className="bg-white shadow-sm rounded-lg overflow-x-auto h-auto">
         <div className="px-4 py-3 border-b">
           <h4 className="text-base font-semibold text-gray-800">Tour Request Details</h4>
           <p className="text-xs text-gray-500">
@@ -78,7 +77,7 @@ export default function TourRequestsPage() {
           </p>
         </div>
 
-        <table className="min-w-full divide-y divide-gray-200  overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200   overflow-x-auto">
           <thead className="bg-gray-50 text-xs text-left text-gray-600 uppercase">
             <tr>
               <th className="p-3">Request ID</th>
@@ -115,7 +114,7 @@ export default function TourRequestsPage() {
                 </td>
                 <td className="p-3 text-center">
                   <ActionMenu
-                    onEdit={() => alert(`Edit ${row.name}`)}
+                    onEdit={() => router.push(`/admin/tour/edit`)}
                     onDelete={() => alert(`Delete ${row.name}`)}
                   />
                 </td>

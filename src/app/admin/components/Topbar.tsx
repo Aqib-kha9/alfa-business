@@ -2,16 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Wallet, PlusCircle, Settings, Menu } from 'lucide-react';
+import { Home, Wallet, PlusCircle, Menu, LayoutDashboard } from 'lucide-react';
+import { TiMessage } from 'react-icons/ti';
 
 export default function AdminNavbar({ toggleSidebar }: { toggleSidebar: () => void }) {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/admin/dashboard', label: 'Dashboard', icon: <Home size={18} /> },
+    { href: '/admin/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
     { href: '/admin/plans', label: 'Pricing Plans', icon: <Wallet size={18} /> },
     { href: '/admin/tour', label: 'Tour Requests', icon: <PlusCircle size={18} /> },
-    { href: '/admin/amenities', label: 'Amenities', icon: <Settings size={18} /> },
+    { href: '/admin/amenities', label: 'Amenities', icon: <Home size={18} /> },
+    { href: '/admin/testimonials', label: 'Testimonials', icon: <TiMessage size={18} /> },
   ];
 
   return (

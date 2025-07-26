@@ -1,11 +1,24 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function EditPlanPage() {
   const { id } = useParams();
   const router = useRouter();
-  const [form, setForm] = useState({
+
+  const [form, setForm] = useState<{
+    title: string;
+    monthlyPrice: string;
+    yearlyPrice: string;
+    available: string;
+    description: string;
+    montlyFeactures: string;
+    yearlyFeature: string;
+    images: string | File;
+    popular: string;
+    features: string;
+  }>({
     title: '',
     monthlyPrice: '',
     yearlyPrice: '',
@@ -37,21 +50,50 @@ export default function EditPlanPage() {
       });
   }, [id]);
 
+  const handleChange = (field: string, value: any) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const featuresArr = form.features.split(',').map(f => f.trim());
 
+    const formData = new FormData();
+    formData.append('title', form.title);
+    formData.append('monthlyPrice', form.monthlyPrice);
+    formData.append('yearlyPrice', form.yearlyPrice);
+    formData.append('available', form.available);
+    formData.append('description', form.description);
+    formData.append('montlyFeactures', form.montlyFeactures);
+    formData.append('yearlyFeature', form.yearlyFeature);
+    formData.append('popular', form.popular);
+    formData.append('features', JSON.stringify(featuresArr));
+
+    if (form.images instanceof File) {
+      formData.append('images', form.images);
+    }
+
     await fetch(`/api/plans/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, features: featuresArr }),
+      body: formData,
     });
 
     router.push('/admin/plans');
   };
 
-  const handleChange = (field: string, value: string) => {
-    setForm(prev => ({ ...prev, [field]: value }));
+  const handleCancel = () => {
+    setForm({
+      title: '',
+      monthlyPrice: '',
+      yearlyPrice: '',
+      available: '',
+      description: '',
+      montlyFeactures: '',
+      yearlyFeature: '',
+      images: '',
+      popular: '',
+      features: '',
+    })
   };
 
   const inputFields = [
@@ -63,48 +105,77 @@ export default function EditPlanPage() {
     { name: 'montlyFeactures', label: 'Monthly Features', type: 'textarea', placeholder: 'Enter Monthly Features' },
     { name: 'yearlyFeature', label: 'Yearly Features', type: 'textarea', placeholder: 'Enter Yearly Features' },
     { name: 'features', label: 'Other Features (comma separated)', type: 'textarea', placeholder: 'e.g., feature1, feature2' },
-    { name: 'images', label: 'Image URL', type: 'input', placeholder: 'Enter Image URL' },
+    { name: 'images', label: 'Image Upload', type: 'file', placeholder: 'Upload Image' },
     { name: 'popular', label: 'Popular (true/false)', type: 'input', placeholder: 'true or false' },
   ];
-  const handleCancel = () => {
-    router.push('/admin/plans')
-  }
-  return (
-    <div className="p-6 max-w-xl mx-auto mt-10 bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold mb-6 text-[#2d386a] border-b pb-2">Edit Plan</h1>
-      <form onSubmit={handleSubmit} className="space-y-5 grid grid-cols-1 md:grid-cols-2 gap-5">
 
-        {inputFields.map(({ name, label, type, placeholder }) => (
-          <div key={name}>
-            <label htmlFor={name} className="block mb-1 font-medium text-gray-700">
+  return (
+    <div className="p-6 max-w-4xl mx-auto mt-4 bg-white shadow-md rounded-md">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+        <h1 className="text-2xl font-bold text-[#2d386a] border-b pb-2">Edit Plan</h1>
+        <button
+          onClick={() => router.back()}
+          className="mt-2 sm:mt-0 px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300"
+        >
+          ← Back
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {inputFields.map(({ name, label, type }) => (
+          <div key={name} className="flex flex-col">
+            <label htmlFor={name} className="mb-1 font-medium text-gray-700">
               {label}
             </label>
+
             {type === 'input' ? (
               <input
                 id={name}
+                type="text"
                 className="w-full p-2 border rounded"
                 required
-                value={form[name as keyof typeof form]}
+                value={form[name as keyof typeof form] as string}
                 onChange={e => handleChange(name, e.target.value)}
               />
+            ) : type === 'file' ? (
+              <>
+                <input
+                  id={name}
+                  type="file"
+                  className="w-full p-2 border rounded"
+                  accept="image/*"
+                  onChange={e => handleChange(name, e.target.files?.[0] || '')}
+                />
+                {form.images && typeof form.images === 'string' && (
+                  <img
+                    src={form.images}
+                    alt="Preview"
+                    className="mt-2 h-24 object-contain border rounded"
+                  />
+                )}
+              </>
             ) : (
               <textarea
                 id={name}
                 className="w-full p-2 border rounded"
                 required
                 rows={3}
-                value={form[name as keyof typeof form]}
+                value={form[name as keyof typeof form] as string}
                 onChange={e => handleChange(name, e.target.value)}
               />
             )}
           </div>
         ))}
-        <div>
 
-          <button type="submit" className="bg-[#2d386a] text-white px-4 py-2 rounded w-130">
+        <div className="col-span-1 md:col-span-2 flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-4">
+          <button type="submit" className="bg-[#2d386a] text-white px-6 py-2 rounded w-full sm:w-auto">
             Update Plan
           </button>
-          <button type='reset' onClick={handleCancel} className='px-4 my-2 py-2 border roundeds text-gray-700'>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="border border-gray-300 px-6 py-2 rounded w-full sm:w-auto text-gray-700"
+          >
             Cancel
           </button>
         </div>
