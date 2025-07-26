@@ -57,7 +57,7 @@ export default function AmenitiesPage() {
     }
 
     return (
-        <div className="p-6  mx-auto">
+        <div className="p-6 mx-auto">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-1xl md:text-4xl font-bold">Amenities Management</h2>
                 <button

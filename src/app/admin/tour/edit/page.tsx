@@ -55,7 +55,7 @@ export default function EditTour() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto mt-4 bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold text-[#2d386a] mb-6 border-b pb-2">Edit Tour Request admin</h1>
+      <h1 className="text-2xl font-bold text-[#2d386a] mb-6 border-b pb-2">Edit Tour Request </h1>
 
       <form className="grid grid-cols-1 gap-4">
         {fields.map(({ name, label }) => (
